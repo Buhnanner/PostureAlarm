@@ -6,7 +6,11 @@ A program to notify you of your bad posture
 11/30/2019
 """
 
+# Graphics based UI library
 from tkinter import *
+# Image manipulation with pillow
+from PIL import Image, ImageTk
+# Time library for alarm function
 from time import sleep
 
 window_X = 240
@@ -30,7 +34,7 @@ class Main_Window:
         self.b1 = Button(self.master, text="Close", width=4, command=master.quit)
         self.b2 = Button(self.master, text="+", width=4,command=self.new_window)
 
-        self.info_text = Label(self.master, text='SIT THE FUCK UP')
+        self.info_text = Label(self.master, text='Sit Up Buddy!')
         self.info_text.pack()
 
         self.b1.place(x=80,y=20)
@@ -61,8 +65,8 @@ class Options_Window():     # Classifies the alternate options menu
         Minute = 60 # Minute is to be multiplied by whichever number the user enters
         User_Time = StringVar()
 
-        self.back_button = Button(self.master, image=backbutton) # Back Button
-        self.forward_button = Button(self.master, image=forwardbutton) # Forward Button
+        self.back_button = Button(self.master, image=back_image_resize) # Back Button
+        self.forward_button = Button(self.master, image=forward_image_resize) # Forward Button
         self.back_button.place(x=0,y=0)
         self.forward_button.place(x=17,y=0)
 
@@ -76,9 +80,19 @@ class Options_Window():     # Classifies the alternate options menu
 
 if __name__ == '__main__':
     root = Tk()
-    backbutton = PhotoImage(file=r"C:\Users\kip_m\Desktop\Python\PostureAlarm\Images\arrow-left.gif")
-    forwardbutton = PhotoImage(file=r"C:\Users\kip_m\Desktop\Python\PostureAlarm\Images\arrow-right.gif")
 
+    backbutton = r"C:\Users\kip_m\Desktop\Python\PostureAlarm\Images\arrow-left.gif"
+    forwardbutton = r"C:\Users\kip_m\Desktop\Python\PostureAlarm\Images\arrow-right.gif"
+
+    # Image packing and resizing
+    back_image = Image.open(backbutton)
+    forward_image = Image.open(forwardbutton)
+    back_image = back_image.resize((16,16), Image.ANTIALIAS)
+    forward_image = forward_image.resize((16,16), Image.ANTIALIAS)
+
+    # Final images
+    back_image_resize = ImageTk.PhotoImage(back_image)
+    forward_image_resize = ImageTk.PhotoImage(forward_image)
 
     MainWindow = Main_Window(root)
     root.minsize(window_X,window_Y)
