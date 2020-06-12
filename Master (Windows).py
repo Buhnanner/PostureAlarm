@@ -1,9 +1,11 @@
-
 """
-LATEST WINDOWS BUILD
 Kipland Melton
 A program to notify you of your bad posture
-11/30/2019
+
+Windows Build .27W
+
+PZ Software
+May 23, 2020
 """
 
 # Graphics based UI library
@@ -16,16 +18,12 @@ from time import sleep
 window_X = 240
 window_Y = 50
 
-
-"""
-wTaskbar_posX = 1670
-wTaskbar_posY = 960
-"""
-
-
 class Main_Window:
 
     def __init__(self, master):
+
+        self.page = 1
+
         self.master = master
         self.frame = Frame(self.master)
 
@@ -48,8 +46,8 @@ class Main_Window:
         Opt_activate = Options_Window(self.newWindow)
         self.newWindow.minsize(window_X,window_Y)
         self.newWindow.geometry("+1670+960")
-
-
+        self.page += 1
+        print(self.page)
 
 
 
@@ -62,10 +60,7 @@ class Options_Window():     # Classifies the alternate options menu
         self.options_text = Label(self.master, text="Set Alert Interval (Minutes)") # Window Description
         self.options_text.pack()
 
-        Minute = 60 # Minute is to be multiplied by whichever number the user enters
-        User_Time = StringVar()
-
-        self.back_button = Button(self.master, image=back_image_resize) # Back Button
+        self.back_button = Button(self.master, image=back_image_resize, command=self.back_button) # Back Button
         self.forward_button = Button(self.master, image=forward_image_resize) # Forward Button
         self.back_button.place(x=0,y=0)
         self.forward_button.place(x=17,y=0)
@@ -74,15 +69,36 @@ class Options_Window():     # Classifies the alternate options menu
 
         self.master.wm_iconbitmap('officechair.ico') # Declares icon for options window
 
-        self.Alarm_entry = Entry(self.master, width=4, textvariable=User_Time).place(x=100, y=23)  # Creates text box for time entry
+        # the placement of the submit button/time entry is not good, reposition PLEASE
+        self.timeEntrySave = StringVar()
+        self.Alarm_entry = Entry(self.master, width=4, textvariable=self.timeEntrySave)
+        self.Alarm_entry.place(x=90, y=23)  # Creates text box for time entry
+        self.submit_time = Button(self.master, text='Submit',command=self.TimeEntry_ToFile)
+        self.submit_time.place(x=110,y=23)
+
+    def TimeEntry_ToFile(self):
+        usertime = self.Alarm_entry.get()
+        with open('time_entry.txt', 'a') as file_object:
+            file_object.write(usertime) 
+
+
+    def back_button(self):
+
+        self.master.withdraw()
+        self.newWindow = Toplevel(self.master)
+        Opt_activate = Main_Window(self.newWindow)
+        self.newWindow.minsize(window_X,window_Y)
+        self.newWindow.geometry("+1670+960")
+        self.page -= 1
 
 
 
 if __name__ == '__main__':
     root = Tk()
-
-    backbutton = r"C:\Users\kip_m\Desktop\Python\PostureAlarm\Images\arrow-left.gif"
-    forwardbutton = r"C:\Users\kip_m\Desktop\Python\PostureAlarm\Images\arrow-right.gif"
+    
+    # File path for back/forward buttons
+    backbutton = r"C:\Users\kip_m\Desktop\Python\PostureAlarm\Images\arrow-left.png"
+    forwardbutton = r"C:\Users\kip_m\Desktop\Python\PostureAlarm\Images\arrow-right.png"
 
     # Image packing and resizing
     back_image = Image.open(backbutton)
@@ -94,9 +110,12 @@ if __name__ == '__main__':
     back_image_resize = ImageTk.PhotoImage(back_image)
     forward_image_resize = ImageTk.PhotoImage(forward_image)
 
+
+    ###################
+    # Root properties #
+    ###################
     MainWindow = Main_Window(root)
     root.minsize(window_X,window_Y)
-
 
     root.geometry("+1670+960")  #+1670+1000 for noti window
     root.wm_iconbitmap('officechair.ico')
