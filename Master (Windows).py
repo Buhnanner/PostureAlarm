@@ -67,7 +67,7 @@ class Options_Window():     # Classifies the alternate options menu
 
         self.frame.pack()
 
-        self.master.wm_iconbitmap('officechair.ico') # Declares icon for options window
+        self.master.wm_iconbitmap(r'C:\Users\kip_m\Desktop\Python\PostureAlarm\Images\officechair.ico') # Declares icon for options window
 
         # the placement of the submit button/time entry is not good, reposition PLEASE
         self.timeEntrySave = StringVar()
@@ -118,5 +118,5 @@ if __name__ == '__main__':
     root.minsize(window_X,window_Y)
 
     root.geometry("+1670+960")  #+1670+1000 for noti window
-    root.wm_iconbitmap('officechair.ico')
+    root.wm_iconbitmap(r'C:\Users\kip_m\Desktop\Python\PostureAlarm\Images\officechair.ico')
     root.mainloop()
